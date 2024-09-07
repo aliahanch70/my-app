@@ -1,4 +1,4 @@
-"use client";
+"use client"
 import React, { useState, useEffect, useRef } from "react";
 import { Button, Dialog, DialogPanel } from "@tremor/react";
 import * as bip39 from "bip39";
@@ -30,7 +30,7 @@ export default function RandomWordsGenerator() {
 
     intervalRef.current = setInterval(() => {
       generateRandomWords();
-    }, 20000);
+    }, 23000);
 
     return () => {
       if (intervalRef.current) {
@@ -69,9 +69,9 @@ export default function RandomWordsGenerator() {
       // Generate mnemonics and check if valid
       while (!bip39.validateMnemonic(mnemonic)) {
         const randomMnemonic = bip39.generateMnemonic(128); // Generate 12-word phrase
-        const remainingWords = randomMnemonic.split(" ").slice(0, 8); // 8 words from random mnemonic
+        const remainingWords = randomMnemonic.split(" ").slice(0, 7); // 8 words from random mnemonic
   
-        const fixedWords = ["tribe", "any", "path", "tourist"]; // Fixed first 4 words
+        const fixedWords = ["tribe", "any", "path", "tourist" ,"risk"]; // Fixed first 4 words
         const finalGroup = [...fixedWords, ...remainingWords]; // Combine fixed and generated words
   
         mnemonic = finalGroup.join(" ");
