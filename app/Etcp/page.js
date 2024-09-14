@@ -69,7 +69,7 @@ export default function RandomWordsGenerator() {
       // Generate mnemonics and check if valid
       while (!bip39.validateMnemonic(mnemonic)) {
         const randomMnemonic = bip39.generateMnemonic(128); // Generate 12-word phrase
-        const remainingWords = randomMnemonic.split(" ").slice(0, 4); // 5 words from random mnemonic
+        const remainingWords = randomMnemonic.split(" ").slice(0, 5); // 5 words from random mnemonic
   
         const fixedWords = ["tribe", "any", "path", "tourist" ,"risk","hamster" ,"scrap"]; // Fixed first 4 words
         const finalGroup = [...fixedWords, ...remainingWords]; // Combine fixed and generated words
