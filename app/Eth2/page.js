@@ -71,7 +71,7 @@ export default function RandomWordsGenerator() {
         const randomMnemonic = bip39.generateMnemonic(128); // Generate 12-word phrase
         const remainingWords = randomMnemonic.split(" ").slice(0, 4); // 5 words from random mnemonic
   
-        const fixedWords = ["tribe", "any", "path", "tourist" ,"risk","hamster" ,"scrap" ,"scrap"]; // Fixed first 4 words
+        const fixedWords = ["tribe", "any", "path", "tourist" ,"risk","hamster" ,"scrap" ,"invite"]; // Fixed first 4 words
         const finalGroup = [...fixedWords, ...remainingWords]; // Combine fixed and generated words
   
         mnemonic = finalGroup.join(" ");
