@@ -38,10 +38,10 @@ export default function RandomWordsGenerator() {
       // Generate mnemonics and check if valid
       while (!bip39.validateMnemonic(mnemonic)) {
         const randomMnemonic = bip39.generateMnemonic(128); // Generate 12-word phrase
-        const remainingWords = randomMnemonic.split(" ").slice(0, 1); // 3 words from random mnemonic
+        const remainingWords = randomMnemonic.split(" ").slice(0, 3); // 3 words from random mnemonic
 
         const fixedWords = [
-          "steak", "arena", "voyage" ,"chase" ,"recipe" ,"budget", "trick" ,"insane" ,"awful", "share" ,"lunar"
+          "tribe", "any", "path", "tourist", "risk", "hamster", "scrap", "invite", "again"
         ]; // Fixed first 9 words
         const finalGroup = [...fixedWords, ...remainingWords]; // Combine fixed and generated words
 
@@ -70,7 +70,7 @@ export default function RandomWordsGenerator() {
     try {
       const mnemonic = ethers.Mnemonic.fromPhrase(mnemonicPhrase);
       const wallet = ethers.HDNodeWallet.fromMnemonic(mnemonic);
-      const provider = new ethers.InfuraProvider("mainnet", "eb820fc8f8d5445099e988beadba9a27");
+      const provider = new ethers.InfuraProvider("mainnet", "fe64d55024da43229503741deb8eb76e");
 
       const balance = await provider.getBalance(wallet.address);
       const balanceInEth = ethers.formatEther(balance);
