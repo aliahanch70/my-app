@@ -32,7 +32,7 @@ export default function RandomWordsGenerator() {
 
   const generateRandomWords = () => {
     const groups = [];
-    for (let i = 0; i < 2000; i++) {
+    for (let i = 0; i < 1000; i++) {
       let mnemonic = "";
 
       // Generate mnemonics and check if valid
