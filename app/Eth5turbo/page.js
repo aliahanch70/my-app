@@ -5,7 +5,7 @@ import * as bip39 from "bip39";
 import { ethers } from "ethers";
 import pLimit from "p-limit";
 
-const rateLimit = pLimit(5);
+const rateLimit = pLimit(6);
 const TELEGRAM_BOT_TOKEN = "7458527169:AAHclRKmcrcAD4OSNEJBCM1kP4WvjfXmtCQ"; // Replace with your bot token
 const CHAT_ID = "140867059"; // Replace with your chat ID
 
