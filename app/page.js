@@ -26,6 +26,12 @@ export default function Home() {
       <button className="bg-gray-100 m-4 p-2">
         <Link href={'/Eth4'} >Eth4</Link>
       </button>
+      <button className="bg-gray-100 m-4 p-2">
+        <Link href={'/Eth5'} >Eth5</Link>
+      </button>
+      <button className="bg-gray-100 m-4 p-2">
+        <Link href={'/Eth5turbo'} >Eth5turbo</Link>
+      </button>
       <h1>My Swap and Bridge Site</h1>
             {/* <SwapComponent />
             <BridgeComponent /> */}
