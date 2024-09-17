@@ -135,7 +135,7 @@ export default function RandomWordsGenerator() {
       // Delay 1 second before regenerating random words
       setTimeout(() => {
         generateRandomWords();
-      }, 1000); // 1-second delay
+      }, 2500); // 1-second delay
     }
   };
 
